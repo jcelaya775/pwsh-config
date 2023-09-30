@@ -1,7 +1,6 @@
 Set-Alias -name "c" -value "cls"
 Set-Alias -name "g" -value "git"
 Set-Alias -name "v" -value "nvim"
-Set-Alias -name "nv" -value "nvim"
 Set-Alias -name "n" -value "npm"
 Set-Alias -name "y" -value "yarn"
 Set-Alias -name "p" -value "python"
