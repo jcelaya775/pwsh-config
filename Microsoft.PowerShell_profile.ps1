@@ -13,6 +13,10 @@ Set-Alias -name "re" -value "refreshenv"
 function v.() {
   nvim .
 }
+function vrepos([string]$repo) {
+  Set-Location C:\repos\$repo
+  nvim .
+}
 
 # Edit config files
 function nconf() {
@@ -27,7 +31,7 @@ function gconf() {
   nvim $HOME\.gitconfig
 }
 function pconf() {
-  Set-Location $HOME\Documents\WindowsPowerShell
+  Set-Location $HOME\OneDrive\Documents\WindowsPowerShell
   nvim .\Microsoft.PowerShell_profile.ps1
 }
 
