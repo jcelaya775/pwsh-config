@@ -14,6 +14,23 @@ function v.() {
   nvim .
 }
 
+# Edit config files
+function nconf() {
+  Set-Location $HOME\AppData\Local\nvim
+  nvim .
+}
+function vconf() {
+  Set-Location $HOME\AppData\Local\nvim
+  nvim .
+}
+function gconf() {
+  nvim $HOME\.gitconfig
+}
+function pconf() {
+  Set-Location $HOME\Documents\WindowsPowerShell
+  nvim .\Microsoft.PowerShell_profile.ps1
+}
+
 # Change directory
 function ch(){
   Set-Location $HOME
