@@ -16,7 +16,8 @@ function v.() {
   nvim .
 }
 function v.d([int]$n) {
-  $dir = "$(fd --type d --max-depth 1 | fzf)"
+  $cwd = Get-Location
+  $dir = "$cwd\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -24,7 +25,8 @@ function v.d([int]$n) {
   nvim .
 }
 function v.dr([int]$n) {
-  $dir = "$(fd --type d | fzf)"
+  $cwd = Get-Location
+  $dir = "$cwd\$(fd --type d | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -32,16 +34,18 @@ function v.dr([int]$n) {
   nvim .
 }
 function v.f([int]$n) {
-  $file = "$(fd --type f --max-depth 1 | fzf)"
+  $cwd = Get-Location
+  $file = "$cwd\$(fd --type f --max-depth 1 | fzf)"
   nvim $file
 }
 function v.fr([int]$n) {
-  $file = "$(fd --type f | fzf)"
+  $cwd = Get-Location
+  $file = "$cwd\$(fd --type f | fzf)"
   nvim $file
 }
 function vp([int]$n) {
   Set-Location C:\repos
-  $project = "$(fd --type d --max-depth 1 | fzf)"
+  $project = "C:\repos\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
@@ -50,7 +54,7 @@ function vp([int]$n) {
 }
 function vp.([int]$n) {
   Set-Location C:\repos
-  $project = "$(fd --type d --max-depth 1 | fzf)"
+  $project = "C:\repos\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
@@ -85,21 +89,25 @@ function pconf() {
 
 # Change directory
 function c.([int]$n) {
-  $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s+")} | fzf)"
+  $cwd = Get-Location
+  $dir = "$cwd\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $dir
+  echo "$dir"
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c.r([int]$n) {
-  $dir = "$(fd --type d | fzf)"
+  $cwd = Get-Location
+  $dir = "$cwd\$(fd --type d | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c..([int]$n) {
-  $dir = "..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s+")} | fzf)"
+  $cwd = Get-Location
+  $dir = "$cwd\..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s\s+")} | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -138,8 +146,9 @@ function crepos([string]$repo) {
   Set-Location C:\repos\$repo
 }
 function crepos.([int]$n) {
+  $cwd = Set-Location
   Set-Location C:\repos
-  $dir = "$(fd --type d --max-depth 1 | fzf)"
+  $dir = "$cwd\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d C:\repos\$dir
@@ -173,10 +182,6 @@ function vdocs.() {
   Set-Location $HOME\Documents
   $file = "$(fd --type f | fzf)"
   nvim $file
-  nvim .
-}
-function vrepos([string]$repo) {
-  Set-Location C:\repos\$repo
   nvim .
 }
 
