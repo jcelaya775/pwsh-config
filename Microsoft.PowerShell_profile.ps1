@@ -1,6 +1,6 @@
 oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/amro.omp.json" | Invoke-Expression
 
-Set-Alias -name "c" -value "cGet-Childitem -Directory"
+Set-Alias -name "c" -value "cls"
 Set-Alias -name "g" -value "git"
 Set-Alias -name "v" -value "nvim"
 Set-Alias -name "n" -value "npm"
@@ -15,7 +15,7 @@ function v.() {
 }
 function v.d([int]$n) {
   $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
@@ -23,7 +23,7 @@ function v.d([int]$n) {
 }
 function v.dr([int]$n) {
   $dir = "$(Get-Childitem -Directory -Recurse . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
@@ -39,7 +39,7 @@ function v.fr([int]$n) {
 }
 function vproj([int]$n) {
   $project = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
-  cd $project
+  Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
   }
@@ -47,7 +47,7 @@ function vproj([int]$n) {
 }
 function vp([int]$n) {
   $project = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
-  cd $project
+  Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
   }
@@ -74,28 +74,28 @@ function pconf() {
 # Change directory
 function cproj([int]$n) {
   $dir = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c.([int]$n) {
   $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c.r([int]$n) {
   $dir = "$(Get-Childitem -Directory -Recurse . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c..([int]$n) {
   $dir = "..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s\s+")} | fzf)"
-  cd $dir
+  Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
