@@ -181,7 +181,6 @@ function vdocs.() {
   Set-Location $HOME\Documents
   $file = "$(fd --type f | fzf)"
   nvim $file
-  nvim .
 }
 
 # Working with directories
