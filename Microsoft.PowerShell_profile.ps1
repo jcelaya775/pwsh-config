@@ -9,12 +9,14 @@ Set-Alias -name "p" -value "python"
 Set-Alias -name "pn" -value "pnpm"
 Set-Alias -name "re" -value "refreshenv"
 
+# TODO: find out how to fd absolute paths
+
 # Open neovim
 function v.() {
   nvim .
 }
 function v.d([int]$n) {
-  $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $dir = "$(fd --type d --max-depth 1 | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -22,7 +24,7 @@ function v.d([int]$n) {
   nvim .
 }
 function v.dr([int]$n) {
-  $dir = "$(Get-Childitem -Directory -Recurse . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $dir = "$(fd --type d | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -30,28 +32,30 @@ function v.dr([int]$n) {
   nvim .
 }
 function v.f([int]$n) {
-  $file = "$(Get-Childitem -File . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $file = "$(fd --type f --max-depth 1 | fzf)"
   nvim $file
 }
 function v.fr([int]$n) {
-  $file = "$(Get-Childitem -File -Recurse . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $file = "$(fd --type f | fzf)"
   nvim $file
 }
-function vproj([int]$n) {
-  $project = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
+function vp([int]$n) {
+  Set-Location C:\repos
+  $project = "$(fd --type d --max-depth 1 | fzf)"
   Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
   }
   nvim .
 }
-function vp([int]$n) {
-  $project = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
+function vp.([int]$n) {
+  Set-Location C:\repos
+  $project = "$(fd --type d --max-depth 1 | fzf)"
   Set-Location $project
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $project
   }
-  nvim .
+  v.fr
 }
 
 # Edit config files
@@ -59,42 +63,43 @@ function nconf() {
   Set-Location $HOME\AppData\Local\nvim
   nvim .
 }
+function nconf.() {
+  Set-Location $HOME\AppData\Local\nvim
+  v.fr
+}
 function vconf() {
   Set-Location $HOME\AppData\Local\nvim
   nvim .
+}
+function vconf.() {
+  Set-Location $HOME\AppData\Local\nvim
+  v.fr
 }
 function gconf() {
   nvim $HOME\.gitconfig
 }
 function pconf() {
-  Set-Location $HOME\OneDrive\Documents\WindowsPowerShell
+  Set-Location "$HOME\OneDrive\Documents\WindowsPowerShell"
   nvim .\Microsoft.PowerShell_profile.ps1
 }
 
 # Change directory
-function cproj([int]$n) {
-  $dir = "C:\repos\$(Get-Childitem -Directory C:\repos | ForEach-Object{($_ -split "\s+")} | fzf)"
-  Set-Location $dir
-  for ($i = 1; $i -lt $n; $i++) {
-    wt.exe -w 0 nt -d $dir
-  }
-}
 function c.([int]$n) {
-  $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $dir = "$(Get-Childitem -Directory . | ForEach-Object{($_ -split "\s+")} | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c.r([int]$n) {
-  $dir = "$(Get-Childitem -Directory -Recurse . | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $dir = "$(fd --type d | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
   }
 }
 function c..([int]$n) {
-  $dir = "..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  $dir = "..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s+")} | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
@@ -103,23 +108,56 @@ function c..([int]$n) {
 function ch(){
   Set-Location $HOME
 }
+function ch.(){
+  Set-Location $HOME
+  c.
+}
+function ch.r(){
+  Set-Location $HOME
+  c.r
+}
 function cwh () {
   Set-Location $HOME
 }
-function cdoc() {
-  Set-Location $HOME\Documents
+function cwh.(){
+  Set-Location $HOME
+  c.
+}
+function cwh.r(){
+  Set-Location $HOME
+  c.r
 }
 function cdocs() {
   Set-Location $HOME\Documents
 }
+function cdocs.() {
+  Set-Location $HOME\Documents
+  c.r
+}
 function crepos([string]$repo) {
   Set-Location C:\repos\$repo
+}
+function crepos.([int]$n) {
+  Set-Location C:\repos
+  $dir = "$(fd --type d --max-depth 1 | fzf)"
+  Set-Location $dir
+  for ($i = 1; $i -lt $n; $i++) {
+    wt.exe -w 0 nt -d C:\repos\$dir
+  }
 }
 function cvim() {
   Set-Location $HOME\AppData\Local\nvim
 }
+function cvim.() {
+  Set-Location $HOME\AppData\Local\nvim
+  c.r
+}
 function cnvim() {
   Set-Location $HOME\AppData\Local\nvim
+}
+function cnvim.() {
+  Set-Location $HOME\AppData\Local\nvim
+  c.r
 }
 
 # Open directory/project in neovim
@@ -129,6 +167,12 @@ function vnotes() {
 }
 function vdocs() {
   Set-Location $HOME\Documents
+  nvim .
+}
+function vdocs.() {
+  Set-Location $HOME\Documents
+  $file = "$(fd --type f | fzf)"
+  nvim $file
   nvim .
 }
 function vrepos([string]$repo) {
