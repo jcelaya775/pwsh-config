@@ -18,23 +18,6 @@ function vrepos([string]$repo) {
   nvim .
 }
 
-# Edit config files
-function nconf() {
-  Set-Location $HOME\AppData\Local\nvim
-  nvim .
-}
-function vconf() {
-  Set-Location $HOME\AppData\Local\nvim
-  nvim .
-}
-function gconf() {
-  nvim $HOME\.gitconfig
-}
-function pconf() {
-  Set-Location $HOME\OneDrive\Documents\WindowsPowerShell
-  nvim .\Microsoft.PowerShell_profile.ps1
-}
-
 # Change directory
 function ch(){
   Set-Location $HOME
@@ -58,7 +41,38 @@ function cnvim() {
   Set-Location $HOME\AppData\Local\nvim
 }
 
-# Working with directories
+# Open directory/project
+function vnotes() {
+  Set-Location $HOME\Documents
+  nvim notes.md
+}
+function vdocs() {
+  Set-Location $HOME\Documents
+  nvim .
+}
+function vrepos([string]$repo) {
+  Set-Location C:\repos\$repo
+  nvim .
+}
+
+# Edit config files
+function nconf() {
+  Set-Location $HOME\AppData\Local\nvim
+  nvim .
+}
+function vconf() {
+  Set-Location $HOME\AppData\Local\nvim
+  nvim .
+}
+function gconf() {
+  nvim $HOME\.gitconfig
+}
+function pconf() {
+  Set-Location $HOME\OneDrive\Documents\WindowsPowerShell
+  nvim .\Microsoft.PowerShell_profile.ps1
+}
+
+# Directory utils
 function gcip([string]$item) {
   Get-ChildItem -path *$item*
 }
