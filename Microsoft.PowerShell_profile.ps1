@@ -146,12 +146,11 @@ function crepos([string]$repo) {
   Set-Location C:\repos\$repo
 }
 function crepos.([int]$n) {
-  $cwd = Set-Location
   Set-Location C:\repos
-  $dir = "$cwd\$(fd --type d --max-depth 1 | fzf)"
+  $dir = "C:\repos\$(fd --type d --max-depth 1 | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
-    wt.exe -w 0 nt -d C:\repos\$dir
+    wt.exe -w 0 nt -d $dir
   }
 }
 function cvim() {
