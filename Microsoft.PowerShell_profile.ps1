@@ -1,5 +1,3 @@
-oh-my-posh init pwsh --config "$env:POSH_THEMES_PATH/amro.omp.json" | Invoke-Expression
-
 Set-Alias -name "c" -value "cls"
 Set-Alias -name "g" -value "git"
 Set-Alias -name "v" -value "nvim"
@@ -83,7 +81,7 @@ function gconf() {
   nvim $HOME\.gitconfig
 }
 function pconf() {
-  Set-Location "$HOME\OneDrive\Documents\WindowsPowerShell"
+  Set-Location "$HOME\Documents\WindowsPowerShell"
   nvim .\Microsoft.PowerShell_profile.ps1
 }
 
@@ -108,6 +106,15 @@ function c.r([int]$n) {
 function c..([int]$n) {
   $cwd = Get-Location
   $dir = "$cwd\..\$(Get-Childitem -Directory .. | ForEach-Object{($_ -split "\s\s+")} | fzf)"
+  Set-Location $dir
+  for ($i = 1; $i -lt $n; $i++) {
+    wt.exe -w 0 nt -d $dir
+  }
+}
+function c..r([int]$n) {
+  Set-Location ..
+  $cwd = Get-Location
+  $dir = "$cwd\$(fd --type d | fzf)"
   Set-Location $dir
   for ($i = 1; $i -lt $n; $i++) {
     wt.exe -w 0 nt -d $dir
